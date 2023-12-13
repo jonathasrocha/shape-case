@@ -53,7 +53,7 @@ def drop_tables(
 ):
     spark.sql(f"DROP TABLE IF EXISTS {database}.equipment")
     spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_sensors")
-    spark.sql(f"DROP DATABASE IF EXISTS {database}.equipment_failure_sensors")
+    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_failure_sensors")
 
 
 if __name__ == '__main__':
