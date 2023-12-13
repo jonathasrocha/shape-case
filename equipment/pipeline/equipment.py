@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, to_date, count, avg
+from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -90,7 +90,7 @@ class EquipmentETL(StandardETL):
         dim_equipment = kwargs["dim_equipment"]
         equipment_df = equipment_df.withColumn(
             "equipment_sk",
-            expr("concat(md5(), created_at_dt)")
+            expr("concat(md5(), updated_at_dt)")
         )
         dim_equipment_latest = dim_equipment.where("current = True")
         
@@ -171,7 +171,10 @@ class EquipmentETL(StandardETL):
     def _get_equipment_failure_sensors(self, spark) -> DataFrame:
         return spark.read.text(f"{self.STORAGE_PATH}/data/equipment/equipment_failure_sensors/")
 
-    def transform_equipment_failure_sensor(self, equipment_failures: DataFrame) -> DataFrame:
+    def transform_equipment_failure_sensor(equipment_failures: DataFrame) -> DataFrame:
+        
+        treat_err_value = lambda column: when(column == "err", lit(0)).otherwise(column)
+
         df_equipment_failures = equipment_failures
         df_equipment_failures = df_equipment_failures.select(
             split("value", "\t").getItem(0).alias("created_at_dt"),
@@ -180,16 +183,21 @@ class EquipmentETL(StandardETL):
             split("value", "\t").getItem(4).alias("temperature"),
             split("value", "\t").getItem(5).alias("vibration")
         )
-
         df_equipment_failures = df_equipment_failures.withColumn(
+            "created_at_dt",
+            regexp_replace("created_at_dt", "(\[|\])", "")
+        ).withColumn(
+            "created_at_dt",
+            to_timestamp(regexp_replace("created_at_dt", "\/", "-"), format="yyyy-MM-dd HH:mm:ss")
+        ).withColumn(
             "sensor_id",
             regexp_replace("sensor_id","\D", "")
         ).withColumn(
             "temperature",
-            regexp_replace("sensor_id", "vibration", "")
+            regexp_replace("temperature", "vibration|\,", "")
         ).withColumn(
             "vibration",
-            regexp_replace("vibration", ")", "")
+            regexp_replace("vibration", "\)", "")
         )
         return df_equipment_failures
 
@@ -241,16 +249,6 @@ class EquipmentETL(StandardETL):
         )
         silver_datasets = {}
         
-        silver_datasets["equipment_sensors"] = DataSetConfig(
-            name="equipment_sensors",
-            curr_data=input_datasets["equipment_sensors"],
-            primary_keys=["equipment_id", "sensor_id"],
-            storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_sensors/",
-            table_name="equipment_sensors",
-            database=self.DATABASE,
-            partition=kwargs.get('partition', self.DEFAULT_PARTITION),
-        )
-
         silver_datasets["dim_equipment"] = DataSetConfig(
             name="dim_equipment",
             curr_data=dim_equipment_df,
@@ -262,10 +260,8 @@ class EquipmentETL(StandardETL):
         )
         
         self.publish_data(silver_datasets, spark)
-        silver_datasets['equipment_failure_sensor'].curr_data = spark.read.table(
-            f'{self.DATABASE}.dim_equipment'
-        )
-        silver_datasets['equipment_failure_sensor'].skip_publish = True
+        silver_datasets['dim_equipment'].skip_publish = True
+        
         silver_datasets["equipment_failure_sensor"] = DataSetConfig(
             name="equipment_failure_sensor",
             curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensor"].curr_data),

@@ -35,7 +35,7 @@ def create_tables(
             LOCATION '{path}/equipment/equipment_sensors/'
         """
     )
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_sensors")
+    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_failure_sensors")
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment_failure_sensors (

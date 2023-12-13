@@ -23,6 +23,18 @@ def create_tables(
             LOCATION '{path}/equipment/dim_equipment'
         """
     )
+    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_failure")
+    spark.sql(
+        f"""
+            CREATE TABLE {database}.equipment_failure (
+                created_at_dt TIMESTAMP,
+                log_level STRING,
+                sensor_id STRING,
+                temperature DECIMAL(18,2),
+                vibration DECIMAL(18,2)
+            LOCATION '{path}/equipment/dim_equipment'
+        """
+    )
    
 def drop_tables(
     spark,
