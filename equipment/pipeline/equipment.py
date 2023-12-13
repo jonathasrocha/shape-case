@@ -172,7 +172,7 @@ class EquipmentETL(StandardETL):
         return spark.read.text(f"{self.STORAGE_PATH}/data/equipment/equipment_failure_sensors/")
 
     def transform_equipment_failure_sensor(self, equipment_failures: DataFrame) -> DataFrame:
-        df_equipment_failures = equipment_failures.curr_data
+        df_equipment_failures = equipment_failures
         df_equipment_failures = df_equipment_failures.select(
             split("value", "\t").getItem(0).alias("created_at_dt"),
             split("value", "\t").getItem(1).alias("log_level"),
