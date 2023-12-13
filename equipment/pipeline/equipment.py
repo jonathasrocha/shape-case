@@ -171,7 +171,7 @@ class EquipmentETL(StandardETL):
     def _get_equipment_failure_sensors(self, spark) -> DataFrame:
         return spark.read.text(f"{self.STORAGE_PATH}/data/equipment/equipment_failure_sensors/")
 
-    def transform_equipment_failure_sensor(equipment_failures: DataFrame) -> DataFrame:
+    def transform_equipment_failure_sensor(self, equipment_failures: DataFrame) -> DataFrame:
         
         treat_err_value = lambda column: when(column == "err", lit(0)).otherwise(column)
 
@@ -194,10 +194,10 @@ class EquipmentETL(StandardETL):
             regexp_replace("sensor_id","\D", "")
         ).withColumn(
             "temperature",
-            regexp_replace("temperature", "vibration|\,", "")
+            treat_err_value(regexp_replace("temperature", "vibration|\,", ""))
         ).withColumn(
             "vibration",
-            regexp_replace("vibration", "\)", "")
+            treat_err_value(regexp_replace("vibration", "\)", ""))
         )
         return df_equipment_failures
 
