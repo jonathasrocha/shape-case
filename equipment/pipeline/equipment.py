@@ -258,7 +258,6 @@ class EquipmentETL(StandardETL):
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/dim_equipment/",
             table_name="dim_equipment",
             database=self.DATABASE,
-            partition=kwargs("partition", self.DEFAULT_PARTITION),
             partition=kwargs.get('partition', self.DEFAULT_PARTITION),
         )
         
