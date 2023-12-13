@@ -25,7 +25,7 @@ def create_tables(
                 partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
-            LOCATION '{path}/equipment/dim_equipment'
+            LOCATION '{path}/equipment/equipment_failure_mart'
         """
     )
 
