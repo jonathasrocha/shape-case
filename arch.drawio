@@ -1,0 +1,34 @@
+<mxfile host="app.diagrams.net" modified="2023-12-07T18:55:23.562Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="9r_1l-R_KC4lddjoX1sI" version="22.1.7" type="device">
+  <diagram name="Page-1" id="ZjzWsmBTV62_A3QtW8aY">
+    <mxGraphModel dx="954" dy="543" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;curved=1;" edge="1" parent="1" source="sxrH0FcB_o8xewcMCAKY-1" target="sxrH0FcB_o8xewcMCAKY-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-1" value="Generate failure sensors" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn3.iconfinder.com/data/icons/logos-and-brands-adobe/512/267_Python-512.png;" vertex="1" parent="1">
+          <mxGeometry x="93" y="250" width="42" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-5" value="topic: equipment_failure_sensors" style="verticalLabelPosition=bottom;outlineConnect=0;align=center;dashed=0;html=1;verticalAlign=top;shape=mxgraph.pid2misc.column;columnType=common;direction=south;" vertex="1" parent="1">
+          <mxGeometry x="220" y="292" width="230" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-6" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.icon-icons.com/icons2/2699/PNG/512/apache_kafka_logo_icon_167866.png;" vertex="1" parent="1">
+          <mxGeometry x="310" y="253" width="72" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="245" width="210" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-9" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.icon-icons.com/icons2/2415/PNG/512/postgresql_plain_wordmark_logo_icon_146390.png;" vertex="1" parent="1">
+          <mxGeometry x="574" y="190" width="42" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="sxrH0FcB_o8xewcMCAKY-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.005;entryY=0.559;entryDx=0;entryDy=0;entryPerimeter=0;curved=1;" edge="1" parent="1" source="sxrH0FcB_o8xewcMCAKY-5" target="sxrH0FcB_o8xewcMCAKY-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
