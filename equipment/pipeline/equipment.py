@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, regexp_substr, to_date, count, avg
+from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, to_date, count, avg
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
