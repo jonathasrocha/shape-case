@@ -21,7 +21,8 @@ def create_tables(
                 equipment_group STRING,
                 count INTEGER,
                 avg_temperature DECIMAL(18,2),
-                avg_vibration DECIMAL(18,2)
+                avg_vibration DECIMAL(18,2),
+                partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
             LOCATION '{path}/equipment/dim_equipment'

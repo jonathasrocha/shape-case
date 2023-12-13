@@ -12,10 +12,11 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment (
-            equipment_id INT,
-            name STRING,
-            group_name STRING,
-            updated_at_dt timestamp,
+                equipment_id INT,
+                name STRING,
+                group_name STRING,
+                updated_at_dt TIMESTAMP,
+                partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
             LOCATION '{path}/equipment/equipment/'
@@ -26,8 +27,9 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment_sensors (
-            equipment_id STRING,
-            sensor_id STRING,
+                equipment_id STRING,
+                sensor_id STRING,
+                partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
             LOCATION '{path}/equipment/equipment_sensors/'
@@ -37,7 +39,8 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment_failure_sensors (
-            value STRING
+                value STRING,
+                partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
             LOCATION '{path}/equipment/equipment_sensors/'
