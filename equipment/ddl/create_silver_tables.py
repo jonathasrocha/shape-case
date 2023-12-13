@@ -20,6 +20,7 @@ def create_tables(
                 updated_at_dt TIMESTAMP,
                 valid_from TIMESTAMP,
                 valid_to TIMESTAMP
+            ) USING DELTA
             LOCATION '{path}/equipment/dim_equipment'
         """
     )
@@ -32,6 +33,7 @@ def create_tables(
                 sensor_id STRING,
                 temperature DECIMAL(18,2),
                 vibration DECIMAL(18,2)
+            ) USING DELTA
             LOCATION '{path}/equipment/dim_equipment'
         """
     )
