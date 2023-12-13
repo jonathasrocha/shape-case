@@ -4,14 +4,14 @@ from pyspark.sql import SparkSession
 def create_tables(
     spark,
     path="s3a://equipment/delta/gold",
-    database: str = "equipment",
+    database: str = "equipment"
 ):
     spark.sql(f"CREATE DATABASE IF NOT EXISTS {database}")
 
-    spark.sql(f"DROP TABLE IF EXISTS {database}.dim_equipment")
+    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_failure_mart")
     spark.sql(
         f"""
-            CREATE TABLE {database}.dim_equipment (
+            CREATE TABLE {database}.equipment_failure_mart (
                 equipment_sk STRING,
                 equipment_id STRING,
                 sensor_id STRING,
@@ -31,11 +31,9 @@ def create_tables(
 
 def drop_tables(
     spark,
-    database: str = "equipment",
+    database: str = "equipment"
 ):
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment")
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_sensors")
-    spark.sql(f"DROP DATABASE IF EXISTS {database}.equipment_failure_sensors")
+    spark.sql(f"DROP DATABASE IF EXISTS {database}.equipment_failure_mart")
 
 
 if __name__ == '__main__':

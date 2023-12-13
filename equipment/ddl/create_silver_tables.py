@@ -17,22 +17,18 @@ def create_tables(
                 log_level STRING,
                 created_at_dt timestamp,
                 equipment_id STRING,
-                count INTEGER
-            avg("temperature").alias("avg_temperature"),
-            avg("vibration").alias("avg_vibration")
+                updated_at_dt TIMESTAMP,
+                valid_from TIMESTAMP,
+                valid_to TIMESTAMP
             LOCATION '{path}/equipment/dim_equipment'
         """
     )
-
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_sensors")
-
+   
 def drop_tables(
     spark,
     database: str = "equipment",
 ):
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment")
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_sensors")
-    spark.sql(f"DROP DATABASE IF EXISTS {database}")
+    spark.sql(f"DROP TABLE IF EXISTS {database}.dim_equipment")
 
 
 if __name__ == '__main__':
