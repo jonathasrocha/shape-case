@@ -171,7 +171,7 @@ class EquipmentETL(StandardETL):
     def _get_equipment_failure_sensors(self, spark) -> DataFrame:
         return spark.read.text(f"{self.STORAGE_PATH}/data/equipment/equipment_failure_sensors/")
 
-    def transform_equipment_failure_sensor(self, equipment_failures: DataSetConfig) -> DataSetConfig:
+    def transform_equipment_failure_sensor(self, equipment_failures: DataFrame) -> DataFrame:
         df_equipment_failures = equipment_failures.curr_data
         df_equipment_failures = df_equipment_failures.select(
             split("value", "\t").getItem(0).alias("created_at_dt"),
@@ -268,7 +268,7 @@ class EquipmentETL(StandardETL):
         silver_datasets['equipment_failure_sensor'].skip_publish = True
         silver_datasets["equipment_failure_sensor"] = DataSetConfig(
             name="equipment_failure_sensor",
-            curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensor"]),
+            curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensor"].curr_data),
             primary_keys=["equipment_id"],
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensor/",
             table_name="equipment_failure_sensor",
