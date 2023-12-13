@@ -34,7 +34,7 @@ def create_tables(
                 temperature DECIMAL(18,2),
                 vibration DECIMAL(18,2)
             ) USING DELTA
-            LOCATION '{path}/equipment/dim_equipment'
+            LOCATION '{path}/equipment/equipment_failure'
         """
     )
    
