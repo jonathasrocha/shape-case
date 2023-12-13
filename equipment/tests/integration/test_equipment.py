@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 import pytest
 from delta import configure_spark_with_delta_pip
-from equipment.pipelines.equipment import EquipmentETL
+from equipment.pipeline.equipment import EquipmentETL
 
 
 @pytest.fixture
