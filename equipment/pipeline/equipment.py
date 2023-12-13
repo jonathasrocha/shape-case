@@ -263,10 +263,10 @@ class EquipmentETL(StandardETL):
         )
         
         self.publish_data(silver_datasets, spark)
-        silver_datasets['dim_equipment'].curr_data = spark.read.table(
+        silver_datasets['equipment_failure_sensor'].curr_data = spark.read.table(
             f'{self.DATABASE}.dim_equipment'
         )
-        silver_datasets['dim_equipment'].skip_publish = True
+        silver_datasets['equipment_failure_sensor'].skip_publish = True
         silver_datasets["equipment_failure_sensor"] = DataSetConfig(
             name="equipment_failure_sensor",
             curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensor"]),
