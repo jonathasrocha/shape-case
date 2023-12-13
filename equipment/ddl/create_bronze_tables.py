@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 
 def create_tables(
     spark,
-    path="s3a://equipment/delta/",
+    path="s3a://equipment/delta/bronze",
     database: str = "equipment",
 ):
     spark.sql(f"CREATE DATABASE IF NOT EXISTS {database}")
