@@ -44,4 +44,4 @@ def test_equipment(spark):
     equip = EquipmentETL()
 
 
-    assert len(equip.transform_equipment_failure_sensor(df_input).columns) == 1
+    assert len(equip.transform_equipment_failure_sensor(df_input).columns) == 5
