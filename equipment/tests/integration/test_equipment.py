@@ -1,1 +1,2 @@
-def test_
+def test_equipment():
+    pass
