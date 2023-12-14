@@ -229,7 +229,7 @@ class EquipmentETL(StandardETL):
             {
                 "equipment_failure_sensors": DataSetConfig(
                     name="equipment_sensors",
-                    curr_data=self._get_equipment_failure_sensors(),
+                    curr_data=self._get_equipment_failure_sensors(spark),
                     primary_keys=[],
                     storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment_failure_sensors",
                     table_name="equipment_failure_sensors",
