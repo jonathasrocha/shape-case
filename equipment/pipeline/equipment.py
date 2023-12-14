@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when
+from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -93,21 +93,21 @@ class EquipmentETL(StandardETL):
         )
         dim_equipment_latest = dim_equipment.where("current = True")
         
-        equipment_df = equipment_df.alias("equipment_df")
 
         equipment_df_insert_net_new = (
             equipment_df.join(
                 dim_equipment_latest,
                 (equipment_df.equipment_id == dim_equipment_latest.equipment_id)
                 & (
-                    (dim_equipment_latest.updated_at_dt) < (col("equipment_df.updated_at_dt"))
+                    dim_equipment_latest.updated_at_dt < equipment_df.updated_at_dt
                 ),
                 "leftanti",
-            )
-            .select(
+            ).select(
+                equipment_df.equipment_sk,
                 equipment_df.equipment_id,
                 equipment_df.name,
-                equipment_df.group_name
+                equipment_df.group_name,
+                equipment_df.updated_at_dt
             )
             .withColumn('current', lit(True))
             .withColumn('valid_from', equipment_df.updated_at_dt)
@@ -125,9 +125,11 @@ class EquipmentETL(StandardETL):
                 "leftanti",
             )
             .select(
+                equipment_df.equipment_sk,
                 equipment_df.equipment_id,
                 equipment_df.name,
-                equipment_df.group_name
+                equipment_df.group_name,
+                equipment_df.updated_at_dt
             )
             .withColumn('current', lit(True))
             .withColumn('valid_from', equipment_df.updated_at_dt)
@@ -144,9 +146,12 @@ class EquipmentETL(StandardETL):
                 )
             )
             .select(
-                equipment_df.equipment_id,
-                equipment_df.name,
-                equipment_df.group_name
+                dim_equipment.equipment_sk,
+                dim_equipment.equipment_id,
+                dim_equipment.name,
+                dim_equipment.group_name,
+                equipment_df.updated_at_dt,
+                dim_equipment.valid_from
             )
             .withColumn('current', lit(False))
             .withColumn('valid_to', equipment_df.updated_at_dt)

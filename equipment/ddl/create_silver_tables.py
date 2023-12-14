@@ -13,10 +13,9 @@ def create_tables(
         f"""
             CREATE TABLE {database}.dim_equipment (
                 equipment_sk STRING,
-                sensor_id STRING,
-                log_level STRING,
-                created_at_dt timestamp,
-                equipment_id STRING,
+                equipment_id INT,
+                name STRING,
+                group_name STRING,
                 updated_at_dt TIMESTAMP,
                 current BOOLEAN,
                 valid_from TIMESTAMP,
