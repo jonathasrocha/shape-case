@@ -262,12 +262,12 @@ class EquipmentETL(StandardETL):
         self.publish_data(silver_datasets, spark)
         silver_datasets['dim_equipment'].skip_publish = True
         
-        silver_datasets["equipment_failure_sensor"] = DataSetConfig(
-            name="equipment_failure_sensor",
+        silver_datasets["equipment_failure_sensors"] = DataSetConfig(
+            name="equipment_failure_sensors",
             curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensors"].curr_data),
             primary_keys=["equipment_id"],
-            storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensor/",
-            table_name="equipment_failure_sensor",
+            storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensors/",
+            table_name="equipment_failure_sensors",
             database=self.DATABASE,
             partition=kwargs.get('partition', self.DEFAULT_PARTITION),
         )
@@ -276,7 +276,7 @@ class EquipmentETL(StandardETL):
     def get_failure_mart(self, input_datasets: Dict[str, DataSetConfig], **kwargs) -> DataFrame:
         dim_equipment = input_datasets["dim_equipment"].curr_data.where("current = true")
         equipment_sensors = input_datasets["equipment_sensors"].curr_data
-        equipment_failure_sensor = input_datasets["equipment_failure_sensor"].curr_data
+        equipment_failure_sensor = input_datasets["equipment_failure_sensors"].curr_data
 
         return equipment_failure_sensor.join(
             equipment_sensors,
