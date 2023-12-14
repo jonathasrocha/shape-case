@@ -317,7 +317,7 @@ class EquipmentETL(StandardETL):
     
         return DataSetConfig(
             name="equipment_failure_mart",
-            curr_data=self.get_failure_mart(input_datasets),
+            curr_data=self.get_failure_mart(spark, input_datasets),
             primary_keys=["equipment_failure_mart"],
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_mart/",
             table_name="equipment_failure_mart",
