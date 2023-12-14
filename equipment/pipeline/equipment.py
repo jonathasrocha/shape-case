@@ -93,7 +93,7 @@ class EquipmentETL(StandardETL):
         )
         dim_equipment_latest = dim_equipment.where("current = True")
         
-        equipment_df.alias("equipment_df")
+        equipment_df = equipment_df.alias("equipment_df")
 
         equipment_df_insert_net_new = (
             equipment_df.join(
