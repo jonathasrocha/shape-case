@@ -93,13 +93,16 @@ class EquipmentETL(StandardETL):
         )
         dim_equipment_latest = dim_equipment.where("current = True")
         
+        dim_equipment_latest.alias("dim_equipment_latest")
+        equipment_df.alias("equipment_df")
+
         equipment_df_insert_net_new = (
             equipment_df.join(
                 dim_equipment_latest,
                 (equipment_df.equipment_id == dim_equipment_latest.equipment_id)
                 & (
-                    dim_equipment_latest.updated_at_dt
-                    < equipment_df.updated_at_dt
+                    col("dim_equipment_latest.updated_at_dt")
+                    < col("equipment_df.updated_at_dt")
                 ),
                 "leftanti",
             )
@@ -118,8 +121,8 @@ class EquipmentETL(StandardETL):
                 dim_equipment_latest,
                 (equipment_df.equipment_id == dim_equipment_latest.id)
                 & (
-                    dim_equipment_latest.updated_at_dt
-                    < equipment_df.updated_at_dt
+                    col("dim_equipment_latest.updated_at_dt")
+                    < col("equipment_df.updated_at_dt")
                 ),
                 "leftanti",
             )
@@ -138,8 +141,8 @@ class EquipmentETL(StandardETL):
                 dim_equipment_latest,
                 (equipment_df.equipment_id == dim_equipment_latest.id)
                 & (
-                    dim_equipment_latest.updated_at_dt
-                    < equipment_df.updated_at_dt
+                    col("dim_equipment_latest.updated_at_dt")
+                    < col("equipment_df.updated_at_dt")
                 )
             )
             .select(
