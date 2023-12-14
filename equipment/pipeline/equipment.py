@@ -274,9 +274,9 @@ class EquipmentETL(StandardETL):
         )
         return silver_datasets
     
-    def get_failure_mart(self, input_datasets: Dict[str, DataSetConfig], **kwargs) -> DataFrame:
+    def get_failure_mart(self, spark, input_datasets: Dict[str, DataSetConfig], **kwargs) -> DataFrame:
         dim_equipment = input_datasets["dim_equipment"].curr_data.where("current = true")
-        equipment_sensors = input_datasets["equipment_sensors"].curr_data
+        equipment_sensors = spark.read.table(f"{self.DATABASE}.equipment_sensors")
         equipment_failure_sensor = input_datasets["equipment_failure_sensors"].curr_data
 
         return equipment_failure_sensor.join(
