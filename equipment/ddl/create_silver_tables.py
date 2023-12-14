@@ -24,17 +24,17 @@ def create_tables(
             LOCATION '{path}/equipment/dim_equipment'
         """
     )
-    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_failure")
+    spark.sql(f"DROP TABLE IF EXISTS {database}.equipment_failure_sensors")
     spark.sql(
         f"""
-            CREATE TABLE {database}.equipment_failure (
+            CREATE TABLE {database}.equipment_failure_sensors (
                 created_at_dt TIMESTAMP,
                 log_level STRING,
                 sensor_id STRING,
                 temperature DECIMAL(18,2),
                 vibration DECIMAL(18,2)
             ) USING DELTA
-            LOCATION '{path}/equipment/equipment_failure'
+            LOCATION '{path}/equipment/equipment_failure_sensors'
         """
     )
    
