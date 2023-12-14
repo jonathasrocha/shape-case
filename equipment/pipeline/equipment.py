@@ -201,44 +201,38 @@ class EquipmentETL(StandardETL):
         return df_equipment_failures
 
     def get_bronze_datasets(self, spark: SparkSession, **kwargs) -> Dict[str, DataSetConfig]:
-        return [
-            {
-                "equipment": DataSetConfig(
-                    name="equipment",
-                    curr_data=self._get_equipment(spark),
-                    primary_keys=["equipment_id"],
-                    storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment",
-                    table_name="equipment",
-                    database=self.DATABASE,
-                    partition=kwargs.get("partition", self.DEFAULT_PARTITION),
-                    replace_partition=True
-                )
-            },
-            {
-                "equipment_sensors": DataSetConfig(
-                    name="equipment_sensors",
-                    curr_data=self._get_equipment_sensors(spark),
-                    primary_keys=["equipment_id", "sensor_id"],
-                    storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment_sensors",
-                    table_name="equipment_sensors",
-                    database=self.DATABASE,
-                    partition=kwargs.get("partition", self.DEFAULT_PARTITION),
-                    replace_partition=True
-                )
-            },
-            {
-                "equipment_failure_sensors": DataSetConfig(
-                    name="equipment_sensors",
-                    curr_data=self._get_equipment_failure_sensors(spark),
-                    primary_keys=[],
-                    storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment_failure_sensors",
-                    table_name="equipment_failure_sensors",
-                    database=self.DATABASE,
-                    partition=kwargs.get("partition", self.DEFAULT_PARTITION),
-                    replace_partition=True
-                )
-            }
-        ]
+        return {
+            "equipment": DataSetConfig(
+                name="equipment",
+                curr_data=self._get_equipment(spark),
+                primary_keys=["equipment_id"],
+                storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment",
+                table_name="equipment",
+                database=self.DATABASE,
+                partition=kwargs.get("partition", self.DEFAULT_PARTITION),
+                replace_partition=True
+            ),
+            "equipment_sensors": DataSetConfig(
+                name="equipment_sensors",
+                curr_data=self._get_equipment_sensors(spark),
+                primary_keys=["equipment_id", "sensor_id"],
+                storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment_sensors",
+                table_name="equipment_sensors",
+                database=self.DATABASE,
+                partition=kwargs.get("partition", self.DEFAULT_PARTITION),
+                replace_partition=True
+            ),
+            "equipment_failure_sensors": DataSetConfig(
+                name="equipment_sensors",
+                curr_data=self._get_equipment_failure_sensors(spark),
+                primary_keys=[],
+                storage_path=f"{self.STORAGE_PATH}/bronze/equipment/equipment_failure_sensors",
+                table_name="equipment_failure_sensors",
+                database=self.DATABASE,
+                partition=kwargs.get("partition", self.DEFAULT_PARTITION),
+                replace_partition=True
+            )
+        }
 
     def get_silver_datasets(self, spark: SparkSession, input_datasets: Dict[str, DataSetConfig], **kwargs) -> Dict[str, DataSetConfig]:
 
