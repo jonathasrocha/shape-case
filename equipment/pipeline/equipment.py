@@ -162,7 +162,7 @@ class EquipmentETL(StandardETL):
         )
     
     def _get_equipment(self, spark: SparkSession) -> DataFrame:
-        return spark.read.json(f"{self.STORAGE_PATH}/data/equipment/equipment/").withColumn("updated_at_dt", expr("current_timestamp"))
+        return spark.read.json(f"{self.STORAGE_PATH}/data/equipment/equipment/", multiLine=True).withColumn("updated_at_dt", expr("current_timestamp"))
 
     def _get_equipment_sensors(self, spark: SparkSession) -> DataFrame:
         return spark.read.csv(f"{self.STORAGE_PATH}/data/equipment/equipment_sensors/", sep="/", header=True)
