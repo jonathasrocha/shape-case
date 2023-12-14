@@ -292,7 +292,7 @@ class EquipmentETL(StandardETL):
             equipment_sensors.equipment_id
         ).join(
             dim_equipment,
-            dim_equipment.sensor_id == dim_equipment.sensor_id,
+            dim_equipment.equipment_id == equipment_sensors.equipment_id,
             "left"
         ).select(
             "*",
