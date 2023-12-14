@@ -96,7 +96,7 @@ class EquipmentETL(StandardETL):
         equipment_df_insert_net_new = (
             equipment_df.join(
                 dim_equipment_latest,
-                (equipment_df.id == dim_equipment_latest.id)
+                (equipment_df.equipment_id == dim_equipment_latest.equipment_id)
                 & (
                     dim_equipment_latest.updated_at_dt
                     < equipment_df.updated_at_dt
@@ -116,7 +116,7 @@ class EquipmentETL(StandardETL):
         equipment_df_insert_existing_ids = (
             equipment_df.join(
                 dim_equipment_latest,
-                (equipment_df.id == dim_equipment_latest.id)
+                (equipment_df.equipment_id == dim_equipment_latest.id)
                 & (
                     dim_equipment_latest.updated_at_dt
                     < equipment_df.updated_at_dt
@@ -136,7 +136,7 @@ class EquipmentETL(StandardETL):
         equipment_df_update = (
             equipment_df.join(
                 dim_equipment_latest,
-                (equipment_df.id == dim_equipment_latest.id)
+                (equipment_df.equipment_id == dim_equipment_latest.id)
                 & (
                     dim_equipment_latest.updated_at_dt
                     < equipment_df.updated_at_dt
@@ -317,7 +317,7 @@ class EquipmentETL(StandardETL):
     def run(self, spark: SparkSession) -> None:
 
         bronze_datasets = self.get_bronze_datasets(spark)
-        self.publish_data(bronze_datasets, spark)
+        # self.publish_data(bronze_datasets, spark)
         silver_datasets = self.get_silver_datasets(spark, bronze_datasets)
         self.publish_data(silver_datasets, spark)
         gold_datasets = self.get_gold_datasets(spark, silver_datasets)
