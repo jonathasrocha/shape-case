@@ -162,13 +162,13 @@ class EquipmentETL(StandardETL):
         )
     
     def _get_equipment(self, spark: SparkSession) -> DataFrame:
-        return spark.read.json(f"{self.STORAGE_PATH}/equipment/equipment/").withColumn("updated_at_dt", expr("current_timestamp"))
+        return spark.read.json(f"{self.STORAGE_PATH}/data/equipment/equipment/").withColumn("updated_at_dt", expr("current_timestamp"))
 
     def _get_equipment_sensors(self, spark: SparkSession) -> DataFrame:
-        return spark.read.csv(f"{self.STORAGE_PATH}/equipment/equipment_sensors/", sep="/").option("header", "true")
+        return spark.read.csv(f"{self.STORAGE_PATH}/data/equipment/equipment_sensors/", sep="/").option("header", "true")
     
     def _get_equipment_failure_sensors(self, spark) -> DataFrame:
-        return spark.read.text(f"{self.STORAGE_PATH}/equipment/equipment_failure_sensors/")
+        return spark.read.text(f"{self.STORAGE_PATH}/data/equipment/equipment_failure_sensors/")
 
     def transform_equipment_failure_sensor(self, equipment_failures: DataFrame) -> DataFrame:
         
