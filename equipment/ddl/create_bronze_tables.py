@@ -42,7 +42,8 @@ def create_tables(
         f"""
             CREATE TABLE {database}.equipment_failure_sensors (
                 value STRING,
-                partition STRING
+                partition STRING,
+                etl_inserted TIMESTAMP
             ) USING DELTA
             PARTITIONED BY (partition)
             LOCATION '{path}/equipment/equipment_failure_sensors/'
