@@ -100,7 +100,7 @@ class EquipmentETL(StandardETL):
                 dim_equipment_latest,
                 (equipment_df.equipment_id == dim_equipment_latest.equipment_id)
                 & (
-                    col("dim_equipment_latest.updated_at_dt")
+                    dim_equipment_latest.updated_at_dt
                     < col("equipment_df.updated_at_dt")
                 ),
                 "leftanti",
