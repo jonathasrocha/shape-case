@@ -185,8 +185,8 @@ class EquipmentETL(StandardETL):
             split("value", "\t").getItem(0).alias("created_at_dt"),
             split("value", "\t").getItem(1).alias("log_level"),
             split("value", "\t").getItem(2).alias("sensor_id"),
-            split("value", "\t").getItem(4).alias("temperature").cast("decimal(18,2)"),
-            split("value", "\t").getItem(5).alias("vibration").cast("decimal(18,2)")
+            split("value", "\t").getItem(4).alias("temperature"),
+            split("value", "\t").getItem(5).alias("vibration")
         )
         df_equipment_failures = df_equipment_failures.withColumn(
             "created_at_dt",
@@ -199,10 +199,10 @@ class EquipmentETL(StandardETL):
             regexp_replace("sensor_id","\D", "")
         ).withColumn(
             "temperature",
-            treat_err_value(regexp_replace("temperature", "vibration|\,", ""))
+            treat_err_value(regexp_replace("temperature", "vibration|\,", "")).cast("decimal(18,2)")
         ).withColumn(
             "vibration",
-            treat_err_value(regexp_replace("vibration", "\)", ""))
+            treat_err_value(regexp_replace("vibration", "\)", "")).cast("decimal(18,2)")
         )
         return df_equipment_failures
 
