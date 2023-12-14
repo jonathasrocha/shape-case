@@ -117,7 +117,7 @@ class EquipmentETL(StandardETL):
         equipment_df_insert_existing_ids = (
             equipment_df.join(
                 dim_equipment_latest,
-                (equipment_df.equipment_id == dim_equipment_latest.id)
+                (equipment_df.equipment_id == dim_equipment_latest.equipment_id)
                 & (
                     col("dim_equipment_latest.updated_at_dt")
                     < col("equipment_df.updated_at_dt")
@@ -139,7 +139,7 @@ class EquipmentETL(StandardETL):
         equipment_df_update = (
             equipment_df.join(
                 dim_equipment_latest,
-                (equipment_df.equipment_id == dim_equipment_latest.id)
+                (equipment_df.equipment_id == dim_equipment_latest.equipment_id)
                 & (
                     col("dim_equipment_latest.updated_at_dt")
                     < col("equipment_df.updated_at_dt")
