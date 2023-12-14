@@ -18,6 +18,7 @@ def create_tables(
                 created_at_dt timestamp,
                 equipment_id STRING,
                 updated_at_dt TIMESTAMP,
+                current BOOLEAN,
                 valid_from TIMESTAMP,
                 valid_to TIMESTAMP
             ) USING DELTA
