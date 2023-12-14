@@ -77,7 +77,6 @@ class StandardETL(ABC):
                         .execute()
                     )
 
-
 class EquipmentETL(StandardETL):
     
     def get_dim_equipment(
@@ -325,7 +324,6 @@ class EquipmentETL(StandardETL):
             replace_partition=True
         )
     
-
     def run(self, spark: SparkSession) -> None:
 
         bronze_datasets = self.get_bronze_datasets(spark)
