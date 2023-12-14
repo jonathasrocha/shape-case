@@ -270,6 +270,7 @@ class EquipmentETL(StandardETL):
             table_name="equipment_failure_sensors",
             database=self.DATABASE,
             partition=kwargs.get('partition', self.DEFAULT_PARTITION),
+            replace_partition=True
         )
         return silver_datasets
     
