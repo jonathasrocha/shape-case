@@ -89,7 +89,7 @@ class EquipmentETL(StandardETL):
         dim_equipment = kwargs["dim_equipment"]
         equipment_df = equipment_df.withColumn(
             "equipment_sk",
-            expr("concat(md5(), updated_at_dt)")
+            expr("md5(concat(equipment_id, updated_at_dt))")
         )
         dim_equipment_latest = dim_equipment.where("current = True")
         
