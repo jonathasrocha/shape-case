@@ -32,7 +32,9 @@ def create_tables(
                 log_level STRING,
                 sensor_id STRING,
                 temperature DECIMAL(18,2),
-                vibration DECIMAL(18,2)
+                vibration DECIMAL(18,2),
+                etl_inserted TIMESTAMP,
+                partition STRING
             ) USING DELTA
             LOCATION '{path}/equipment/equipment_failure_sensors'
         """
