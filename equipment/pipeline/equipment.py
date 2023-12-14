@@ -185,8 +185,8 @@ class EquipmentETL(StandardETL):
             split("value", "\t").getItem(0).alias("created_at_dt"),
             split("value", "\t").getItem(1).alias("log_level"),
             split("value", "\t").getItem(2).alias("sensor_id"),
-            split("value", "\t").getItem(4).alias("temperature"),
-            split("value", "\t").getItem(5).alias("vibration")
+            split("value", "\t").getItem(4).alias("temperature").cast("decimal(18,2)"),
+            split("value", "\t").getItem(5).alias("vibration").cast("decimal(18,2)")
         )
         df_equipment_failures = df_equipment_failures.withColumn(
             "created_at_dt",
