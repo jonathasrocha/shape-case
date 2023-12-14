@@ -335,7 +335,7 @@ class EquipmentETL(StandardETL):
 
 if __name__ == "__main__":
 
-    spark = SparkSession.bulder.appName("equipment").enableHiveSupport().getOrCreate()
+    spark = SparkSession.builder.appName("equipment").enableHiveSupport().getOrCreate()
     equipment = EquipmentETL()
     equipment.run(spark)
     spark.stop()
