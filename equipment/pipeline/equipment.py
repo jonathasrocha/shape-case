@@ -157,9 +157,9 @@ class EquipmentETL(StandardETL):
             .withColumn('valid_to', equipment_df.updated_at_dt)
         )
 
-        return equipment_df_insert_net_new.unionByname(
+        return equipment_df_insert_net_new.unionByName(
             equipment_df_insert_existing_ids
-        ).unionByname(
+        ).unionByName(
             equipment_df_update
         )
     
