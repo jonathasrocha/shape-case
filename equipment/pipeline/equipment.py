@@ -317,16 +317,18 @@ class EquipmentETL(StandardETL):
 
     def get_gold_datasets(self, spark: SparkSession, input_datasets: Dict[str, DataSetConfig], **kwargs) -> Dict[str, DataSetConfig]:
     
-        return DataSetConfig(
-            name="equipment_failure_mart",
-            curr_data=self.get_failure_mart(spark, input_datasets),
-            primary_keys=["equipment_failure_mart"],
-            storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_mart/",
-            table_name="equipment_failure_mart",
-            database=self.DATABASE,
-            partition=kwargs.get('partition', self.DEFAULT_PARTITION),
-            replace_partition=True
-        )
+        return {
+           "equipment_failure_mart": DataSetConfig(
+                name="equipment_failure_mart",
+                curr_data=self.get_failure_mart(spark, input_datasets),
+                primary_keys=["equipment_failure_mart"],
+                storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_mart/",
+                table_name="equipment_failure_mart",
+                database=self.DATABASE,
+                partition=kwargs.get('partition', self.DEFAULT_PARTITION),
+                replace_partition=True
+            )
+        }
     
     def run(self, spark: SparkSession) -> None:
 
