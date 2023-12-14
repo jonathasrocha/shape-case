@@ -256,6 +256,7 @@ class EquipmentETL(StandardETL):
             table_name="dim_equipment",
             database=self.DATABASE,
             partition=kwargs.get('partition', self.DEFAULT_PARTITION),
+            skip_publish=True
         )
         
         self.publish_data(silver_datasets, spark)
@@ -263,7 +264,7 @@ class EquipmentETL(StandardETL):
         
         silver_datasets["equipment_failure_sensor"] = DataSetConfig(
             name="equipment_failure_sensor",
-            curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensor"].curr_data),
+            curr_data=self.transform_equipment_failure_sensor(input_datasets["equipment_failure_sensors"].curr_data),
             primary_keys=["equipment_id"],
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensor/",
             table_name="equipment_failure_sensor",
