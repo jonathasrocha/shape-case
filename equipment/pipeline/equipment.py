@@ -45,6 +45,9 @@ class StandardETL(ABC):
     def get_gold_datasets(self, spark: SparkSession, **kwargs) -> Dict[str, DataFrame]:
         pass
     
+    def construct_join_string(self, keys: List[str]) -> str:
+        return ' AND '.join([f"target.{key} = source.{key}" for key in keys])
+
     def publish_data(
         self,
         input_datasets: Dict[str, DataSetConfig],
