@@ -338,6 +338,7 @@ class EquipmentETL(StandardETL):
 if __name__ == "__main__":
 
     spark = SparkSession.builder.appName("equipment").enableHiveSupport().getOrCreate()
+    spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")
     equipment = EquipmentETL()
     equipment.run(spark)
     spark.stop()
