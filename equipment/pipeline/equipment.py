@@ -279,7 +279,7 @@ class EquipmentETL(StandardETL):
         equipment_sensors = spark.read.table(f"{self.DATABASE}.equipment_sensors")
         equipment_failure_sensor = input_datasets["equipment_failure_sensors"].curr_data
 
-        return equipment_failure_sensor.join(
+        equipment_failure_sensor =  equipment_failure_sensor.join(
             equipment_sensors,
             equipment_sensors.sensor_id == equipment_failure_sensor.sensor_id,
             "left"
@@ -290,9 +290,11 @@ class EquipmentETL(StandardETL):
             equipment_failure_sensor.vibration,
             to_date(equipment_failure_sensor.created_at_dt, "yyyy-dd-mm").alias("created_at_dt"),
             equipment_sensors.equipment_id
-        ).join(
+        )
+        
+        return equipment_failure_sensor.join(
             dim_equipment,
-            dim_equipment.equipment_id == equipment_sensors.equipment_id,
+            equipment_failure_sensor.equipment_id == equipment_sensors.equipment_id,
             "left"
         ).select(
             "*",
@@ -306,7 +308,7 @@ class EquipmentETL(StandardETL):
             "sensor_id",
             "log_level",
             "created_at_dt",
-            "equipment_id"
+            equipment_failure_sensor.equipment_id
         ).agg(
             count("sensor_id").alias("count"),
             avg("temperature").alias("avg_temperature"),
