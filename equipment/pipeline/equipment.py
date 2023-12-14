@@ -234,7 +234,7 @@ class EquipmentETL(StandardETL):
 
         dim_equipment_df = self.get_dim_equipment(
             input_datasets["equipment"],
-            dim_equipment=spark.read.table(f"{self.DATABASE}.equipment")
+            dim_equipment=spark.read.table(f"{self.DATABASE}.dim_equipment")
         )
         silver_datasets = {}
         
