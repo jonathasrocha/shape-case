@@ -16,6 +16,7 @@ def create_tables(
                 name STRING,
                 group_name STRING,
                 updated_at_dt TIMESTAMP,
+                etl_inserted TIMESTAMP,
                 partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
@@ -29,6 +30,7 @@ def create_tables(
             CREATE TABLE {database}.equipment_sensors (
                 equipment_id STRING,
                 sensor_id STRING,
+                etl_inserted TIMESTAMP,
                 partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
