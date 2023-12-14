@@ -327,11 +327,11 @@ class EquipmentETL(StandardETL):
     def run(self, spark: SparkSession) -> None:
 
         bronze_datasets = self.get_bronze_datasets(spark)
-        self.publish_data(bronze_datasets)
+        self.publish_data(bronze_datasets, spark)
         silver_datasets = self.get_silver_datasets(spark)
-        self.publish_data(silver_datasets)
+        self.publish_data(silver_datasets, spark)
         gold_datasets = self.get_gold_datasets(spark)
-        self.publish_data(gold_datasets)
+        self.publish_data(gold_datasets, spark)
 
 if __name__ == "__main__":
 
