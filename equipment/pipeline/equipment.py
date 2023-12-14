@@ -4,6 +4,7 @@ from pyspark.sql.functions import col, current_timestamp, expr, lit, split, rege
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
+from delta.tables import DeltaTable
 
 
 @dataclass
@@ -61,7 +62,7 @@ class StandardETL(ABC):
                         f"partition = '{input_dataset.partition}'",
                     ).save(input_dataset.storage_path)
                 else:
-                    targetDF = DataSetConfig.forPath(
+                    targetDF = DeltaTable.forPath(
                         spark, input_dataset.storage_path
                     )
                     (
