@@ -91,7 +91,7 @@ class EquipmentETL(StandardETL):
             "equipment_sk",
             expr("md5(concat(equipment_id, updated_at_dt))")
         )
-        dim_equipment_latest = dim_equipment_latest.where("current = True")
+        dim_equipment_latest = dim_equipment.where("current = True")
         
         equipment_df = equipment_df.alias("equipment_df")
 
