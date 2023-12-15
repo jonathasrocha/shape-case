@@ -287,7 +287,7 @@ class EquipmentETL(StandardETL):
             equipment_failure_sensor.sensor_id,
             equipment_failure_sensor.temperature,
             equipment_failure_sensor.vibration,
-            to_date(equipment_failure_sensor.created_at_dt, "yyyy-dd-mm").alias("created_at_dt"),
+            to_date(equipment_failure_sensor.created_at_dt).alias("created_at_dt"),
             equipment_sensors.equipment_id
         )
         
