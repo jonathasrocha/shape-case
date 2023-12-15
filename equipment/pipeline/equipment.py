@@ -321,7 +321,7 @@ class EquipmentETL(StandardETL):
                 name="equipment_failure_mart",
                 curr_data=self.get_failure_mart(spark, input_datasets),
                 primary_keys=[""],
-                storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_mart/",
+                storage_path=f"{self.STORAGE_PATH}/gold/equipment/equipment_failure_mart/",
                 table_name="equipment_failure_mart",
                 database=self.DATABASE,
                 partition=kwargs.get('partition', self.DEFAULT_PARTITION),
