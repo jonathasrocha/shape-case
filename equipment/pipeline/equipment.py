@@ -310,8 +310,8 @@ class EquipmentETL(StandardETL):
             equipment_failure_sensor.equipment_id
         ).agg(
             count("sensor_id").alias("count").cast("int"),
-            avg("temperature").alias("avg_temperature"),
-            avg("vibration").alias("avg_vibration")
+            avg("temperature").alias("avg_temperature").cast("decimal(18,2)"),
+            avg("vibration").alias("avg_vibration").cast("decimal(18,2)")
         )
 
     def get_gold_datasets(self, spark: SparkSession, input_datasets: Dict[str, DataSetConfig], **kwargs) -> Dict[str, DataSetConfig]:
