@@ -13,7 +13,7 @@ def create_tables(
         f"""
             CREATE TABLE {database}.dim_equipment (
                 equipment_sk STRING,
-                equipment_id INT,
+                equipment_id STRING,
                 name STRING,
                 group_name STRING,
                 updated_at_dt TIMESTAMP,

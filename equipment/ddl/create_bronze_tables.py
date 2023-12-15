@@ -12,7 +12,7 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment (
-                equipment_id INT,
+                equipment_id STRING,
                 name STRING,
                 group_name STRING,
                 updated_at_dt TIMESTAMP,
