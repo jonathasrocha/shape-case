@@ -255,7 +255,7 @@ class EquipmentETL(StandardETL):
             table_name="dim_equipment",
             database=self.DATABASE,
             partition=kwargs.get('partition', self.DEFAULT_PARTITION),
-            # skip_publish=True
+            skip_publish=True
         )
         
         self.publish_data(silver_datasets, spark)
@@ -332,9 +332,9 @@ class EquipmentETL(StandardETL):
     def run(self, spark: SparkSession) -> None:
 
         bronze_datasets = self.get_bronze_datasets(spark)
-        self.publish_data(bronze_datasets, spark)
+        # self.publish_data(bronze_datasets, spark)
         silver_datasets = self.get_silver_datasets(spark, bronze_datasets)
-        self.publish_data(silver_datasets, spark)
+        # self.publish_data(silver_datasets, spark)
         gold_datasets = self.get_gold_datasets(spark, silver_datasets)
         self.publish_data(gold_datasets, spark)
 
