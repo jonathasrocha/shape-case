@@ -297,11 +297,14 @@ class EquipmentETL(StandardETL):
             "left"
         ).select(
             "*",
-            dim_equipment.name,
+            dim_equipment.name.alias("equipment_name"),
             dim_equipment.group_name,
-            dim_equipment.equipment_sk
+            dim_equipment.equipment_sk,
+            dim_equipment.equipment_id
         ).groupBy(
             "equipment_sk",
+            dim_equipment.equipment_id,
+            "equipment_name"
             "group_name",
             "name",
             "sensor_id",
@@ -309,9 +312,9 @@ class EquipmentETL(StandardETL):
             "created_at_dt",
             equipment_failure_sensor.equipment_id
         ).agg(
-            count("sensor_id").alias("count").cast("int"),
-            avg("temperature").alias("avg_temperature").cast("decimal(18,2)"),
-            avg("vibration").alias("avg_vibration").cast("decimal(18,2)")
+            count("sensor_id").cast("int").alias("count"),
+            avg("temperature").cast("decimal(18,2)").alias("avg_temperature"),
+            avg("vibration").cast("decimal(18,2)").alias("avg_vibration")
         )
 
     def get_gold_datasets(self, spark: SparkSession, input_datasets: Dict[str, DataSetConfig], **kwargs) -> Dict[str, DataSetConfig]:

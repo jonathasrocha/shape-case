@@ -22,6 +22,7 @@ def create_tables(
                 count INTEGER,
                 avg_temperature DECIMAL(18,2),
                 avg_vibration DECIMAL(18,2),
+                etl_inserted TIMESTAMP,
                 partition STRING
             ) USING DELTA
             PARTITIONED BY (partition)
