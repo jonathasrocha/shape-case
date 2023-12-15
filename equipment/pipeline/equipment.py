@@ -303,14 +303,12 @@ class EquipmentETL(StandardETL):
             dim_equipment.equipment_id
         ).groupBy(
             "equipment_sk",
-            dim_equipment.equipment_id,
-            "equipment_name"
-            "group_name",
-            "name",
+            equipment_failure_sensor.equipment_id,
+            "equipment_name",
+            dim_equipment.group_name,
             "sensor_id",
             "log_level",
             "created_at_dt",
-            equipment_failure_sensor.equipment_id
         ).agg(
             count("sensor_id").cast("int").alias("count"),
             avg("temperature").cast("decimal(18,2)").alias("avg_temperature"),

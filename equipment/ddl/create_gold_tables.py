@@ -18,7 +18,7 @@ def create_tables(
                 log_level STRING,
                 created_at_dt DATE,
                 equipment_name STRING,
-                equipment_group STRING,
+                group_name STRING,
                 count INTEGER,
                 avg_temperature DECIMAL(18,2),
                 avg_vibration DECIMAL(18,2),
