@@ -298,7 +298,7 @@ class EquipmentETL(StandardETL):
         ).select(
             "*",
             dim_equipment.name.alias("equipment_name"),
-            dim_equipment.group_name.alias("group_name"),
+            dim_equipment.group_name,
             dim_equipment.equipment_sk,
             dim_equipment.equipment_id
         )
@@ -308,7 +308,7 @@ class EquipmentETL(StandardETL):
         equipment_failure_sensor_eq_error = equipment_failure_sensor_eq_error.groupBy(
             dim_equipment.equipment_id,
             "equipment_name",
-            "group_name",
+            dim_equipment.group_name,
             "sensor_id",
             "log_level",
             "created_at_dt",
