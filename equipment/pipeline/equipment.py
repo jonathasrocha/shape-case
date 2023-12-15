@@ -306,7 +306,7 @@ class EquipmentETL(StandardETL):
         equipment_failure_sensor_diff_error = equipment_failure_sensor.where("log_level != 'ERROR'")
 
         equipment_failure_sensor_eq_error = equipment_failure_sensor_eq_error.groupBy(
-            equipment_failure_sensor_eq_error.equipment_id,
+            dim_equipment.equipment_id,
             "equipment_name",
             "group_name",
             "sensor_id",
@@ -319,7 +319,7 @@ class EquipmentETL(StandardETL):
         )
 
         equipment_failure_sensor_diff_error = equipment_failure_sensor_diff_error.groupBy(
-            equipment_failure_sensor_diff_error.equipment_id,
+            dim_equipment.equipment_id,
             "equipment_name",
             "group_name",
             "sensor_id",
