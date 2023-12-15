@@ -291,7 +291,7 @@ class EquipmentETL(StandardETL):
             equipment_sensors.equipment_id
         )
         
-        return equipment_failure_sensor.join(
+        equipment_failure_sensor=  equipment_failure_sensor.join(
             dim_equipment,
             equipment_failure_sensor.equipment_id == equipment_sensors.equipment_id,
             "left"
@@ -301,7 +301,11 @@ class EquipmentETL(StandardETL):
             dim_equipment.group_name,
             dim_equipment.equipment_sk,
             dim_equipment.equipment_id
-        ).groupBy(
+        )
+        equipment_failure_sensor_eq_error = equipment_failure_sensor.where("log_level = ERROR")
+        equipment_failure_sensor_diff_error = equipment_failure_sensor.where("log_level != ERROR")
+
+        equipment_failure_sensor_eq_error = equipment_failure_sensor_eq_error.groupBy(
             equipment_failure_sensor.equipment_id,
             "equipment_name",
             dim_equipment.group_name,
@@ -313,6 +317,21 @@ class EquipmentETL(StandardETL):
             avg("temperature").cast("decimal(18,2)").alias("avg_temperature"),
             avg("vibration").cast("decimal(18,2)").alias("avg_vibration")
         )
+
+        equipment_failure_sensor_diff_error = equipment_failure_sensor_diff_error.groupBy(
+            equipment_failure_sensor.equipment_id,
+            "equipment_name",
+            dim_equipment.group_name,
+            "sensor_id",
+            "log_level",
+            "created_at_dt",
+        ).agg(
+            count("sensor_id").cast("int").alias("count"),
+            avg("temperature").cast("decimal(18,2)").alias("avg_temperature"),
+            avg("vibration").cast("decimal(18,2)").alias("avg_vibration")
+        )
+
+        return equipment_failure_sensor_eq_error.unionByName(equipment_failure_sensor_diff_error)
 
     def get_gold_datasets(self, spark: SparkSession, input_datasets: Dict[str, DataSetConfig], **kwargs) -> Dict[str, DataSetConfig]:
     
