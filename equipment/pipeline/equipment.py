@@ -302,7 +302,6 @@ class EquipmentETL(StandardETL):
             dim_equipment.equipment_sk,
             dim_equipment.equipment_id
         ).groupBy(
-            "equipment_sk",
             equipment_failure_sensor.equipment_id,
             "equipment_name",
             dim_equipment.group_name,

@@ -3,6 +3,14 @@
 
 head -n 30 challenge-de-interview/equpment_failure_sensors.txt
 
+This is a example of solution to Shape's Data Engineering Interview, i have tried to use a design pattern that simulate the environment with thres layes Bronze (raw file), Silver and Gold. 
+At first layer i saved the files almost original equipment, equipment_sensor(relationships between sensors and equipment’s) and equipment_failure_sensors (log's table), the second layer i aplied the SD2 (https://decisionworks.com/2000/10/design-tip-15-combining-scd-techniques/) from dim_equipment done through equipment and created a table named equipment_failure_sensors this is a transformation of equipment_failure_sensors file in general is split the file to do analysis easier. 
+At last layer i created a table summarized to answer theses four question: 
+
+
+## Architecture
+
+
 
 
 >>> df = spark.read.text("s3a://equipment/delta/sample-equipment_failure_sensors.txt")
@@ -32,3 +40,49 @@ head -n 30 challenge-de-interview/equpment_failure_sensors.txt
 |[2019-08-22 5:1:4...|
 |[2021-02-10 6:0:1...|
 +--------------------+
+
+94.3 MB
+407.3 MB
+
+
+How much the Total equipment failures that happened?
+
+```
+    select
+        count(equipment_id)
+    from equipment.equipment_failure_mart
+    
+```
+Which equipment name had most failures?
+
+```
+    select
+        equipment_id,
+        sum(count)
+    from equipment.equipment_failure_mart
+    order by sum(count) desc
+
+```
+Average amount of failures across equipment group, ordered by the number of failures in ascending order?
+
+```
+    select
+        group_name,
+        avg(count)
+    from equipment.equipment_failure_mart
+    order by sum(count) desc
+
+```
+
+Rank the sensors which present the most number of errors by equipment name in an equipment group.
+
+```
+    select
+        name,
+        group_name,
+        sum(count)
+    from equipment.equipment_failure_mart
+    group by name, group_name
+    order by sum(count) desc
+    limit 10
+```

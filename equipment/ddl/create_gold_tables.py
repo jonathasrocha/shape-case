@@ -12,7 +12,6 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment_failure_mart (
-                equipment_sk STRING,
                 equipment_id STRING,
                 sensor_id STRING,
                 log_level STRING,
