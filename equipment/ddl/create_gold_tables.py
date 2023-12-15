@@ -16,7 +16,7 @@ def create_tables(
                 equipment_id STRING,
                 sensor_id STRING,
                 log_level STRING,
-                created_at_dt TIMESTAMP,
+                created_at_dt DATE,
                 equipment_name STRING,
                 equipment_group STRING,
                 count INTEGER,
