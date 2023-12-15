@@ -305,6 +305,9 @@ class EquipmentETL(StandardETL):
         equipment_failure_sensor_eq_error = equipment_failure_sensor.where("log_level = 'ERROR'")
         equipment_failure_sensor_diff_error = equipment_failure_sensor.where("log_level != 'ERROR'")
 
+
+        raise (equipment_failure_sensor_eq_error.show(5, False), equipment_failure_sensor_diff_error.show(5, False))
+    
         equipment_failure_sensor_eq_error = equipment_failure_sensor_eq_error.groupBy(
             dim_equipment.equipment_id,
             "equipment_name",
@@ -351,9 +354,9 @@ class EquipmentETL(StandardETL):
     def run(self, spark: SparkSession) -> None:
 
         bronze_datasets = self.get_bronze_datasets(spark)
-        self.publish_data(bronze_datasets, spark)
+        # self.publish_data(bronze_datasets, spark)
         silver_datasets = self.get_silver_datasets(spark, bronze_datasets)
-        self.publish_data(silver_datasets, spark)
+        # self.publish_data(silver_datasets, spark)
         gold_datasets = self.get_gold_datasets(spark, silver_datasets)
         self.publish_data(gold_datasets, spark)
 
