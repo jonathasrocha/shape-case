@@ -298,7 +298,7 @@ class EquipmentETL(StandardETL):
         ).select(
             "*",
             dim_equipment.name.alias("equipment_name"),
-            dim_equipment.group_name,
+            dim_equipment.group_name.alias("group_name"),
             dim_equipment.equipment_sk,
             dim_equipment.equipment_id
         )
@@ -306,9 +306,9 @@ class EquipmentETL(StandardETL):
         equipment_failure_sensor_diff_error = equipment_failure_sensor.where("log_level != 'ERROR'")
 
         equipment_failure_sensor_eq_error = equipment_failure_sensor_eq_error.groupBy(
-            equipment_failure_sensor.equipment_id,
+            equipment_failure_sensor_eq_error.equipment_id,
             "equipment_name",
-            dim_equipment.group_name,
+            "group_name",
             "sensor_id",
             "log_level",
             "created_at_dt",
@@ -319,9 +319,9 @@ class EquipmentETL(StandardETL):
         )
 
         equipment_failure_sensor_diff_error = equipment_failure_sensor_diff_error.groupBy(
-            equipment_failure_sensor.equipment_id,
+            equipment_failure_sensor_diff_error.equipment_id,
             "equipment_name",
-            dim_equipment.group_name,
+            "group_name",
             "sensor_id",
             "log_level",
             "created_at_dt",
