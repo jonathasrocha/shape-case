@@ -309,7 +309,7 @@ class EquipmentETL(StandardETL):
             "created_at_dt",
             equipment_failure_sensor.equipment_id
         ).agg(
-            count("sensor_id").alias("count"),
+            count("sensor_id").alias("count").cast("int"),
             avg("temperature").alias("avg_temperature"),
             avg("vibration").alias("avg_vibration")
         )
