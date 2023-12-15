@@ -126,7 +126,6 @@ class EquipmentETL(StandardETL):
                     dim_equipment_latest.updated_at_dt
                     < equipment_df.updated_at_dt
                 ),
-                "leftanti",
             )
             .select(
                 equipment_df.equipment_sk,
@@ -321,7 +320,7 @@ class EquipmentETL(StandardETL):
            "equipment_failure_mart": DataSetConfig(
                 name="equipment_failure_mart",
                 curr_data=self.get_failure_mart(spark, input_datasets),
-                primary_keys=["equipment_failure_mart"],
+                primary_keys=[""],
                 storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_mart/",
                 table_name="equipment_failure_mart",
                 database=self.DATABASE,
