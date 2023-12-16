@@ -62,7 +62,7 @@ class StandardETL(ABC):
                 if input_dataset.replace_partition:
                     curr_data.write.format("delta").mode("overwrite").option(
                         "replaceWhere",
-                        f"partition = 'input_dataset.partition'",
+                        f"partition = '{input_dataset.partition}'",
                     ).save(input_dataset.storage_path)
                 else:
                     targetDF = DeltaTable.forPath(
