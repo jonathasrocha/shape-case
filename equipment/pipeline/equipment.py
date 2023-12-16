@@ -302,11 +302,8 @@ class EquipmentETL(StandardETL):
             dim_equipment.group_name,
             dim_equipment.equipment_sk,
             dim_equipment.equipment_id
-        )
-        equipment_failure_sensor_eq_error = equipment_failure_sensor.where("log_level = 'ERROR'")
-        equipment_failure_sensor_diff_error = equipment_failure_sensor.where("log_level != 'ERROR'")
-        
-        equipment_failure_sensor_eq_error = equipment_failure_sensor_eq_error.groupBy(
+        )        
+        equipment_failure_sensor = equipment_failure_sensor.groupBy(
             dim_equipment.equipment_id,
             "equipment_name",
             dim_equipment.group_name,
@@ -319,20 +316,7 @@ class EquipmentETL(StandardETL):
             avg("vibration").cast("decimal(18,2)").alias("avg_vibration")
         )
 
-        equipment_failure_sensor_diff_error = equipment_failure_sensor_diff_error.groupBy(
-            dim_equipment.equipment_id,
-            "equipment_name",
-            "group_name",
-            "sensor_id",
-            "log_level",
-            "created_at_dt",
-        ).agg(
-            count("sensor_id").cast("int").alias("count"),
-            avg("temperature").cast("decimal(18,2)").alias("avg_temperature"),
-            avg("vibration").cast("decimal(18,2)").alias("avg_vibration")
-        )
-
-        return equipment_failure_sensor_eq_error.unionByName(equipment_failure_sensor_diff_error)
+        return equipment_failure_sensor
 
     def get_gold_datasets(self, spark: SparkSession, input_datasets: Dict[str, DataSetConfig], **kwargs) -> Dict[str, DataSetConfig]:
     
@@ -352,7 +336,7 @@ class EquipmentETL(StandardETL):
     def run(self, spark: SparkSession) -> None:
 
         bronze_datasets = self.get_bronze_datasets(spark)
-        # self.publish_data(bronze_datasets, spark)
+        self.publish_data(bronze_datasets, spark)
         silver_datasets = self.get_silver_datasets(spark, bronze_datasets)
         self.publish_data(silver_datasets, spark)
         gold_datasets = self.get_gold_datasets(spark, silver_datasets)
