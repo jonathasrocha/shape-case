@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date
+from pyspark.sql.functions import Column, col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -56,6 +56,7 @@ class StandardETL(ABC):
     ) -> None:
         for input_dataset in input_datasets.values():
             if not input_dataset.skip_publish:
+                input_dataset.partition = input_dataset.partition if isinstance(input_dataset.partition, Column) else lit(input_dataset.partition)
                 curr_data = input_dataset.curr_data.withColumn(
                     'etl_inserted', current_timestamp()
                 ).withColumn('partition', lit(input_dataset.partition))
@@ -181,18 +182,18 @@ class EquipmentETL(StandardETL):
 
         df_equipment_failures = equipment_failures
         df_equipment_failures = df_equipment_failures.select(
-            split("value", "\t").getItem(0).alias("created_at_dt"),
+            split("value", "\t").getItem(0).alias("created_at_ts"),
             split("value", "\t").getItem(1).alias("log_level"),
             split("value", "\t").getItem(2).alias("sensor_id"),
             split("value", "\t").getItem(4).alias("temperature"),
             split("value", "\t").getItem(5).alias("vibration")
         )
         df_equipment_failures = df_equipment_failures.withColumn(
-            "created_at_dt",
-            regexp_replace("created_at_dt", "(\[|\])", "")
+            "created_at_ts",
+            regexp_replace("created_at_ts", "(\[|\])", "")
         ).withColumn(
-            "created_at_dt",
-            to_timestamp(regexp_replace("created_at_dt", "\/", "-"), format="yyyy-MM-dd HH:mm:ss")
+            "created_at_ts",
+            to_timestamp(regexp_replace("created_at_ts", "\/", "-"), format="yyyy-MM-dd HH:mm:ss")
         ).withColumn(
             "sensor_id",
             regexp_replace("sensor_id","\D", "")
@@ -202,6 +203,9 @@ class EquipmentETL(StandardETL):
         ).withColumn(
             "vibration",
             treat_err_value(regexp_replace("vibration", "\)", "")).cast("decimal(18,2)")
+        ).withColumn(
+            "created_at_dt",
+            to_date("created_at_ts")
         )
         return df_equipment_failures
 
@@ -268,7 +272,7 @@ class EquipmentETL(StandardETL):
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensors/",
             table_name="equipment_failure_sensors",
             database=self.DATABASE,
-            partition=kwargs.get('partition', self.DEFAULT_PARTITION),
+            partition=kwargs.get('partition', col('created_at_ts')),
             replace_partition=True
         )
         return silver_datasets

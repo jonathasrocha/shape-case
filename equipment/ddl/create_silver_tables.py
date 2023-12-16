@@ -28,7 +28,8 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment_failure_sensors (
-                created_at_dt TIMESTAMP,
+                created_at_dt DATE,
+                created_at_ts TIMESTAMP,
                 log_level STRING,
                 sensor_id STRING,
                 temperature DECIMAL(18,2),
@@ -36,6 +37,7 @@ def create_tables(
                 etl_inserted TIMESTAMP,
                 partition STRING
             ) USING DELTA
+            PARTITIONED BY (partition)
             LOCATION '{path}/equipment/equipment_failure_sensors'
         """
     )
