@@ -30,7 +30,7 @@ class StandardETL(ABC):
         self.STORAGE_PATH = storage_path or 's3a://equipment/delta'
         self.DATABASE = database or 'equipment'
         self.DEFAULT_PARTITION = partition or datetime.now().strftime(
-            "%Y-%m-%d-%H-%M-%S"
+            "%Y-%m-%d"
         )
 
     @abstractmethod
