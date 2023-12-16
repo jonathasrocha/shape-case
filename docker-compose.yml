@@ -17,5 +17,7 @@ services:
     build:
       context: ./
       dockerfile: containers/spark/Dockerfile
+    ports:
+      - '4040:4040'
     volumes:
       - ./equipment:/opt/spark/work-dir/equipment
