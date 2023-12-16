@@ -256,7 +256,6 @@ class EquipmentETL(StandardETL):
             table_name="dim_equipment",
             database=self.DATABASE,
             partition=kwargs.get('partition', self.DEFAULT_PARTITION),
-            skip_publish=True
         )
         
         self.publish_data(silver_datasets, spark)
