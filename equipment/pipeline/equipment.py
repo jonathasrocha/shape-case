@@ -272,7 +272,7 @@ class EquipmentETL(StandardETL):
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensors/",
             table_name="equipment_failure_sensors",
             database=self.DATABASE,
-            partition=kwargs.get('partition', col('created_at_ts')),
+            partition=kwargs.get('partition', col('created_at_dt')),
             replace_partition=True
         )
         return silver_datasets
