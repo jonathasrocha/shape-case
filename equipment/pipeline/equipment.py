@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import Column, col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date
+from pyspark.sql.functions import Column, col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date, coalesce
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -176,6 +176,8 @@ class EquipmentETL(StandardETL):
         return spark.read.text(f"{self.STORAGE_PATH}/data/equipment/equipment_failure_sensors/")
 
     def transform_equipment_failure_sensor(self, equipment_failures: DataFrame) -> DataFrame:
+        def to_timestamp_(col, formats=("MM/dd/yyyy", "yyyy-MM-dd")):
+            return coalesce(*[to_timestamp(col, f) for f in formats])
         
         treat_err_value = lambda column: when(column == "err", lit(0)).otherwise(column)
 
@@ -192,8 +194,10 @@ class EquipmentETL(StandardETL):
             regexp_replace("created_at_dt", "(\[|\])", "")
         ).withColumn(
             "created_at_dt",
-            to_timestamp(regexp_replace("created_at_dt", "\/", "-"), format="yyyy-MM-dd HH:mm:ss")
-        ).withColumn(
+            to_timestamp_(regexp_replace("created_at_dt", "\/", "-"), formats=["yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"])
+        )
+        
+        df_equipment_failures = df_equipment_failures.withColumn(
             "sensor_id",
             regexp_replace("sensor_id","\D", "")
         ).withColumn(
@@ -203,6 +207,7 @@ class EquipmentETL(StandardETL):
             "vibration",
             treat_err_value(regexp_replace("vibration", "\)", "")).cast("decimal(18,2)")
         )
+
 
         return df_equipment_failures
 
