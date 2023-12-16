@@ -59,7 +59,7 @@ class StandardETL(ABC):
                 partition_field = input_dataset.partition if isinstance(input_dataset.partition, Column) else lit(input_dataset.partition)
                 curr_data = input_dataset.curr_data.withColumn(
                     'etl_inserted', current_timestamp()
-                ).withColumn('partition', input_dataset.partition)
+                ).withColumn('partition', partition_field)
                 if input_dataset.replace_partition:
                     curr_data.write.format("delta").mode("overwrite").option(
                         "replaceWhere",
