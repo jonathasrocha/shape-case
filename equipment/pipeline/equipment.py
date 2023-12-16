@@ -181,14 +181,14 @@ class EquipmentETL(StandardETL):
 
         df_equipment_failures = equipment_failures
         df_equipment_failures = df_equipment_failures.select(
-            split("value", "\t").getItem(0).alias("created_at_ts"),
+            split("value", "\t").getItem(0).alias("created_at_dt"),
             split("value", "\t").getItem(1).alias("log_level"),
             split("value", "\t").getItem(2).alias("sensor_id"),
             split("value", "\t").getItem(4).alias("temperature"),
             split("value", "\t").getItem(5).alias("vibration")
         )
         df_equipment_failures = df_equipment_failures.withColumn(
-            "created_at_ts",
+            "created_at_dt",
             regexp_replace("created_at_ts", "(\[|\])", "")
         ).withColumn(
             "created_at_ts",
@@ -202,10 +202,8 @@ class EquipmentETL(StandardETL):
         ).withColumn(
             "vibration",
             treat_err_value(regexp_replace("vibration", "\)", "")).cast("decimal(18,2)")
-        ).withColumn(
-            "created_at_dt",
-            to_date("created_at_ts")
         )
+        
         return df_equipment_failures
 
     def get_bronze_datasets(self, spark: SparkSession, **kwargs) -> Dict[str, DataSetConfig]:

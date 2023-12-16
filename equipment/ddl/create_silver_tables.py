@@ -28,8 +28,7 @@ def create_tables(
     spark.sql(
         f"""
             CREATE TABLE {database}.equipment_failure_sensors (
-                created_at_dt DATE,
-                created_at_ts TIMESTAMP,
+                created_at_dt TIMESTAMP,
                 log_level STRING,
                 sensor_id STRING,
                 temperature DECIMAL(18,2),
