@@ -56,14 +56,13 @@ class StandardETL(ABC):
     ) -> None:
         for input_dataset in input_datasets.values():
             if not input_dataset.skip_publish:
-                partition_field = input_dataset.partition if isinstance(input_dataset.partition, Column) else lit(input_dataset.partition)
                 curr_data = input_dataset.curr_data.withColumn(
                     'etl_inserted', current_timestamp()
-                ).withColumn('partition', partition_field.cast("string"))
+                ).withColumn('partition', lit(input_dataset.partition))
                 if input_dataset.replace_partition:
                     curr_data.write.format("delta").mode("overwrite").option(
                         "replaceWhere",
-                        f"partition = '{partition_field._jc.toString()}'",
+                        f"partition in ('{input_dataset.partition}')",
                     ).save(input_dataset.storage_path)
                 else:
                     targetDF = DeltaTable.forPath(
@@ -272,7 +271,7 @@ class EquipmentETL(StandardETL):
             storage_path=f"{self.STORAGE_PATH}/silver/equipment/equipment_failure_sensors/",
             table_name="equipment_failure_sensors",
             database=self.DATABASE,
-            partition=kwargs.get('partition', col('created_at_dt')),
+            partition=kwargs.get('partition', self.DEFAULT_PARTITION),
             replace_partition=True
         )
         return silver_datasets
