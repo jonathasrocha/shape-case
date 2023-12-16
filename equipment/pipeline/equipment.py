@@ -62,7 +62,7 @@ class StandardETL(ABC):
                 if input_dataset.replace_partition:
                     curr_data.write.format("delta").mode("overwrite").option(
                         "replaceWhere",
-                        f"partition in ('{input_dataset.partition}')",
+                        f"partition = 'input_dataset.partition'",
                     ).save(input_dataset.storage_path)
                 else:
                     targetDF = DeltaTable.forPath(
@@ -203,7 +203,7 @@ class EquipmentETL(StandardETL):
             "vibration",
             treat_err_value(regexp_replace("vibration", "\)", "")).cast("decimal(18,2)")
         )
-        
+
         return df_equipment_failures
 
     def get_bronze_datasets(self, spark: SparkSession, **kwargs) -> Dict[str, DataSetConfig]:
