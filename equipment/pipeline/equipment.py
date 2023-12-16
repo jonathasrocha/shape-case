@@ -189,10 +189,10 @@ class EquipmentETL(StandardETL):
         )
         df_equipment_failures = df_equipment_failures.withColumn(
             "created_at_dt",
-            regexp_replace("created_at_ts", "(\[|\])", "")
+            regexp_replace("created_at_dt", "(\[|\])", "")
         ).withColumn(
-            "created_at_ts",
-            to_timestamp(regexp_replace("created_at_ts", "\/", "-"), format="yyyy-MM-dd HH:mm:ss")
+            "created_at_dt",
+            to_timestamp(regexp_replace("created_at_dt", "\/", "-"), format="yyyy-MM-dd HH:mm:ss")
         ).withColumn(
             "sensor_id",
             regexp_replace("sensor_id","\D", "")
