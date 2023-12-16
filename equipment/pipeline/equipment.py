@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import Column, col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date, coalesce
+from pyspark.sql.functions import Column, col, current_timestamp, expr, lit, split, regexp_replace, to_timestamp, count, avg, when, to_date, coalesce, year
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -283,6 +283,7 @@ class EquipmentETL(StandardETL):
         equipment_sensors = spark.read.table(f"{self.DATABASE}.equipment_sensors")
         equipment_failure_sensor = input_datasets["equipment_failure_sensors"].curr_data
 
+        equipment_failure_sensor = equipment_failure_sensor.filter(year("created_at_dt").isin([2019]))
         equipment_failure_sensor =  equipment_failure_sensor.join(
             equipment_sensors,
             equipment_sensors.sensor_id == equipment_failure_sensor.sensor_id,
