@@ -106,13 +106,13 @@ If we count the warnings as failure  the total was 5000001
         log_level
     from equipment.equipment_failure_mart
     group by log_level
-```
+
 +----------+---------+                                                          
 |sum(count)|log_level|
 +----------+---------+
 |   4749475|    ERROR|
 |    250526|  WARNING|
-
+```
 Which equipment name had most failures?
 
 aws:  equipment: 98B84035
