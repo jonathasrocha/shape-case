@@ -13,9 +13,11 @@ At end, on gold table was done the join between these tres tables, dim_equipment
 
 ![Architecture](imgs/arch.png)
 
+## Sample of tables
+
 ### dim_equipment sample data 
 
-```
+```python
 +--------------------------------+------------+--------+----------+--------------------------+-------+--------------------------+-------------------+
 |equipment_sk                    |equipment_id|name    |group_name|updated_at_dt             |current|valid_from                |valid_to           |
 +--------------------------------+------------+--------+----------+--------------------------+-------+--------------------------+-------------------+
@@ -34,10 +36,10 @@ At end, on gold table was done the join between these tres tables, dim_equipment
 |2aeed367f05d0bb5d512a5e56fc29988|14          |2C195700|VAPQY59S  |2023-12-16 23:12:49.471118|true   |2023-12-16 23:12:49.471118|2099-01-01 12:00:00|
 |71c765dfee1d1a54ea427087d1883cc8|2           |43B81579|VAPQY59S  |2023-12-16 23:12:49.471118|true   |2023-12-16 23:12:49.471118|2099-01-01 12:00:00|
 +--------------------------------+------------+--------+----------+--------------------------+-------+--------------------------+-------------------+
-
+```
 
 ### equipment_failure_mart sample data 
-```
+```python
 
 +------------+---------+---------+-------------+--------------+----------+-----+---------------+-------------+--------------------+----------+
 |equipment_id|sensor_id|log_level|created_at_dt|equipment_name|group_name|count|avg_temperature|avg_vibration|        etl_inserted| partition|
@@ -66,6 +68,8 @@ At end, on gold table was done the join between these tres tables, dim_equipment
 
 ```
 
+## Answer
+
 > [!WARNING] 
 > Was consired WARNING AND ERROR as failures
 
@@ -73,7 +77,7 @@ How much the Total equipment failures that happened?
 
 If we count the warnings as failure  the total was 5000001
 
-```
+```sql
     select
         sum(count),
         log_level
@@ -90,7 +94,7 @@ Which equipment name had most failures?
 
 aws:  equipment: 98B84035
 
-```
+```sql
     select
         equipment_name,
         sum(count)
@@ -121,7 +125,7 @@ Average amount of failures across equipment group, ordered by the number of fail
 
 Average by year, month day ? the total across equipment group is:
 
-```
+```sql
     select
         group_name,
         avg(count) sum_failures
@@ -143,7 +147,7 @@ Average by year, month day ? the total across equipment group is:
 ```
 Average by sensor's amount
 
-```
+```sql
         select
             group_name,
             sum(count)/count(distinct sensor_id) avg_by_qty_sensor
@@ -168,7 +172,7 @@ Average by sensor's amount
 
 Rank the sensors which present the most number of errors by equipment name in an equipment group.
 
-```
+```sql
     select
         equipment_name,
         group_name,
@@ -194,4 +198,51 @@ Rank the sensors which present the most number of errors by equipment name in an
 |      09C37FB8|  PA92NCXZ|     1358|       573|
 |      4E834E81|  Z9K1SAP4|     6639|       573|
 +--------------+----------+---------+----------+
+```
+
+## installation
+
+For to build and run the two service just run the code bellow:
+
+```shell
+    docker-compose up -d 
+```
+### tests
+
+For running the tests, execute:
+
+```shell
+    make pytest
+```
+
+### tests
+
+For running the etl, execute:
+
+```shell
+    make etl
+```
+
+### tests
+
+For running the ddl query, execute:
+
+```shell
+    make create_tables
+```
+
+### tests
+
+For running the spark interative query, execute:
+
+```shell
+    make spark-sh
+```
+
+### tests
+
+For running the spark interative query, execute:
+
+```shell
+    make spark-sh
 ```
