@@ -1,8 +1,6 @@
 # Answer to Shape's Data Engineering Interview
 
 
-head -n 30 challenge-de-interview/equpment_failure_sensors.txt
-
 This is a example of solution to Shape's Data Engineering Interview, i have tried to use a design pattern that simulate the environment with thres layes, Bronze (raw file), Silver and Gold. 
 At first layer i saved the files almost original format, except by the format writing with delta table. 
 The second layer was created a version of [SD2](https://decisionworks.com/2000/10/design-tip-15-combining-scd-techniques/) to dim_equipment table, this table is a way to track changes abount each equipment saving the history of updates on own table. At same layer was created a transformation under equipment_failure_sensors(log file) with target to split as well as to aply a schema.
