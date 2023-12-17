@@ -213,7 +213,7 @@ For running the tests, execute:
     make pytest
 ```
 
-### tests
+### ETL
 
 For running the etl, execute:
 
@@ -221,7 +221,7 @@ For running the etl, execute:
     make etl
 ```
 
-### tests
+### DDL
 
 For running the ddl query, execute:
 
@@ -229,15 +229,7 @@ For running the ddl query, execute:
     make create_tables
 ```
 
-### tests
-
-For running the spark interative query, execute:
-
-```shell
-    make spark-sh
-```
-
-### tests
+### Spark interative
 
 For running the spark interative query, execute:
 
