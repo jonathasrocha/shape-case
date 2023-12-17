@@ -68,12 +68,12 @@ At end, on gold table was done the join between these tres tables, dim_equipment
 
 ```
 
-## Answer
+## Answers
 
 > [!WARNING] 
 > It Was considered WARNING AND ERROR as failures
 
-How much the Total equipment failures that happened?
+1. How much the Total equipment failures that happened?
 
 If we count the warnings as failure  the total was 5000001
 
@@ -90,7 +90,7 @@ If we count the warnings as failure  the total was 5000001
 |   4749475|    ERROR|
 |    250526|  WARNING|
 ```
-Which equipment name had most failures?
+2. Which equipment name had most failures?
 
 aws:  equipment: 98B84035
 
@@ -121,7 +121,7 @@ aws:  equipment: 98B84035
 |      E54B5C3A|    355443|
 +--------------+----------+
 ```
-Average amount of failures across equipment group, ordered by the number of failures in ascending order?
+3. Average amount of failures across equipment group, ordered by the number of failures in ascending order?
 
 Average by year, month day ? the total across equipment group is:
 
@@ -170,7 +170,7 @@ Average by sensor's amount
 
 
 
-Rank the sensors which present the most number of errors by equipment name in an equipment group.
+4. Rank the sensors which present the most number of errors by equipment name in an equipment group.
 
 ```sql
     select
