@@ -71,7 +71,7 @@ At end, on gold table was done the join between these tres tables, dim_equipment
 ## Answer
 
 > [!WARNING] 
-> Was consired WARNING AND ERROR as failures
+> It Was considered WARNING AND ERROR as failures
 
 How much the Total equipment failures that happened?
 
