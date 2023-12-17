@@ -299,7 +299,7 @@ class EquipmentETL(StandardETL):
         
         equipment_failure_sensor=  equipment_failure_sensor.join(
             dim_equipment,
-            equipment_failure_sensor.equipment_id == equipment_sensors.equipment_id,
+            equipment_failure_sensor.equipment_id == dim_equipment.equipment_id,
             "left"
         ).select(
             "*",
@@ -328,12 +328,12 @@ class EquipmentETL(StandardETL):
         return {
            "equipment_failure_mart": DataSetConfig(
                 name="equipment_failure_mart",
-                curr_data=self.get_failure_mart(spark, input_datasets),
+                curr_data=equipment_failure_sensor,
                 primary_keys=[""],
-                storage_path=f"{self.STORAGE_PATH}/gold/equipment/equipment_failure_mart/",
+                storage_path=f"s3a://equipment/delta/gold/equipment/equipment_failure_mart/",
                 table_name="equipment_failure_mart",
-                database=self.DATABASE,
-                partition=kwargs.get('partition', self.DEFAULT_PARTITION),
+                database="equipment",
+                partition="2023-12-16",
                 replace_partition=True
             )
         }
