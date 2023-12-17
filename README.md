@@ -3,12 +3,17 @@
 
 head -n 30 challenge-de-interview/equpment_failure_sensors.txt
 
-This is a example of solution to Shape's Data Engineering Interview, i have tried to use a design pattern that simulate the environment with thres layes Bronze (raw file), Silver and Gold. 
-At first layer i saved the files almost original equipment, equipment_sensor(relationships between sensors and equipment’s) and equipment_failure_sensors (log's table), the second layer i aplied the SD2 (https://decisionworks.com/2000/10/design-tip-15-combining-scd-techniques/) from dim_equipment done through equipment and created a table named equipment_failure_sensors this is a transformation of equipment_failure_sensors file in general is split the file to do analysis easier. 
-At last layer i created a table summarized to answer theses four question: 
+This is a example of solution to Shape's Data Engineering Interview, i have tried to use a design pattern that simulate the environment with thres layes, Bronze (raw file), Silver and Gold. 
+At first layer i saved the files almost original format, except by the format writing with delta table. 
+The second layer was created a version of [SD2](https://decisionworks.com/2000/10/design-tip-15-combining-scd-techniques/) to dim_equipment table, this table is a way to track changes abount each equipment saving the history of updates on own table. At same layer was created a transformation under equipment_failure_sensors(log file) with target to split as well as to aply a schema.
+At end, on gold table was done the join between these tres tables, dim_equipment, equipment_sensor and equipment_failure_sensors (log table) summarize by day. It's can be useful to answser the four tasks with simple querys.
 
 
 ## Architecture
+
+![Architecture](imgs/arch.png)
+
+### dim_equipment sample data 
 
 ```
 +--------------------------------+------------+--------+----------+--------------------------+-------+--------------------------+-------------------+
@@ -31,10 +36,9 @@ At last layer i created a table summarized to answer theses four question:
 +--------------------------------+------------+--------+----------+--------------------------+-------+--------------------------+-------------------+
 
 
+### equipment_failure_mart sample data 
+```
 
-
->>> df = spark.read.table("equipment.equipment_failure_mart")
->>> df.show()
 +------------+---------+---------+-------------+--------------+----------+-----+---------------+-------------+--------------------+----------+
 |equipment_id|sensor_id|log_level|created_at_dt|equipment_name|group_name|count|avg_temperature|avg_vibration|        etl_inserted| partition|
 +------------+---------+---------+-------------+--------------+----------+-----+---------------+-------------+--------------------+----------+
@@ -62,37 +66,6 @@ At last layer i created a table summarized to answer theses four question:
 
 ```
 
-
->>> df = spark.read.text("s3a://equipment/delta/sample-equipment_failure_sensors.txt")
-23/12/13 16:42:53 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
->>> df.show()
-+--------------------+                                                          
-|               value|
-+--------------------+
-|[2021-05-18 0:20:...|
-|[2021-05-18 0:20:...|
-|[2021-06-14 19:46...|
-|[2020-09-27 22:55...|
-|[2019-02-9 20:56:...|
-|[2019-02-6 6:19:3...|
-|[2019-08-10 20:23...|
-|[2021-03-25 14:39...|
-|[2020-05-15 17:30...|
-|[2020-12-11 11:52...|
-|[2019-04-16 8:28:...|
-|[2020-10-1 20:8:3...|
-|[2019-03-13 4:13:...|
-|[2020-01-11 11:43...|
-|[2020-02-9 13:57:...|
-|[2020-04-22 18:30...|
-|[2021-03-27 19:56...|
-|[2020-06-3 9:37:1...|
-|[2019-08-22 5:1:4...|
-|[2021-02-10 6:0:1...|
-+--------------------+
-
-94.3 MB
-407.3 MB
 > [!WARNING] 
 > Was consired WARNING AND ERROR as failures
 
